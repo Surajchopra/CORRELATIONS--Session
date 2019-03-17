@@ -1,0 +1,149 @@
+﻿Data Analytics 
+SESSION 10: Correlations 
+Assignment 1 
+
+
+1. Import dataset from the following link: 
+https://archive.ics.uci.edu/ml/machine-learning-databases/00360/ 
+
+Perform the below written operations:
+ 
+a. Read the file in Zip format and get it into R 
+
+Answer:
+
+library(readr)
+AirQualityUCI <- read_delim("AirQualityUCI.zip", ";", escape_double = FALSE, trim_ws = TRUE) 
+View(AirQualityUCI)
+
+b. Create Univariate for all the columns. 
+
+Answer:
+
+AirQualityUCI[AirQualityUCI==-200.0]<-NA 
+for(i in 1:ncol(AirQualityUCI))
+  {
+AirQualityUCI[is.na(AirQualityUCI[,i]),i] <- mean(AirQualityUCI[,i], na.rm = TRUE)
+} 
+
+summary(AirQualityUCI) 
+
+AirQualityUCI[7:14,] 
+
+hist(AirQualityUCI$NOx(GT),col="red") 
+
+dotchart(AirQualityUCI$PT08.S2(NMHC),labels = row.names(AirQualityUCI$PT08.S1(CO)),cex=0.5, color = "blue") 
+
+pairs(AirQualityUCI[7:14]) 
+
+c. Check for missing values in all columns. 
+
+Answer:
+colSums(is.na(AirQualityUCI)
+
+Output:
+
+      Date          Time        CO(GT)   PT08.S1(CO)      NMHC(GT)      C6H6(GT) PT08.S2(NMHC) 
+          114           114           114           114           114           114           114 
+      NOx(GT)  PT08.S3(NOx)       NO2(GT)  PT08.S4(NO2)   PT08.S5(O3)             T            RH 
+          114           114           114           114           114           114           114 
+           AH           X16           X17 
+          114          9471          9471 
+
+d. Impute the missing values using appropriate methods 
+Answer:
+AirQualityUCI[AirQualityUCI==-200.0]<-NA
+for(i in 1:ncol(AirQualityUCI))
+{ 
+AirQualityUCI[is.na(AirQualityUCI[,i]),i] <- mean(AirQualityUCI[,i], na.rm = TRUE)
+} 
+
+summary(AirQualityUCI) 
+
+
+e. Create bi-variate analysis for all relationships 
+
+Answer:
+
+summary(AirQualityUCI) 
+plot(AirQualityUCI$NOx(GT)~AirQualityUCI$PT08.S2(NMHC)) 
+plot(AirQualityUCI$PT08.S1(CO)~AirQualityUCI$PT08.S3(NOx)) 
+plot(AirQualityUCI$NO2(GT)~AirQualityUCI$PT08.S4(NO2)) 
+plot(AirQualityUCI$PT08.S5(O3)~AirQualityUCI$T)
+
+
+f. Test relevant hypothesis for valid relations 
+
+Answer:
+plot(AirQualityUCI$PT08.S1(CO),AirQualityUCI$T) 
+lm(formula=AirQualityUCI$PT08.S3(NOx)~AirQualityUCI$NOx(GT)) 
+lm(formula = AirQualityUCI$PT08.S1(CO)~AirQualityUCI$T) 
+lm(formula = AirQualityUCI$NMHC(GT)~AirQualityUCI$PT08.S2(NMHC)) 
+plot(AirQualityUCI$PT08.S5(O3),AirQualityUCI$NOx(GT)) 
+lm(formula =AirQualityUCI$PT08.S5(O3)~AirQualityUCI$NOx(GT) ) 
+
+pnorm(1.49) pnorm(1.097) qnorm(0.9318879) qnorm(0.8636793)
+
+
+g. Create cross tabulations with derived variables 
+Answer:
+mydata<-AirQualityUCI View(mydata)
+attach(mydata)
+mytable <- table(A,B)						# # A will be rows, B will be columns
+margin.table(mytable, 1)
+
+margin.table(mytable, 2)
+
+prop.table(mytable)
+prop.table(mytable, 1)
+prop.table(mytable, 2)
+
+h. check for trends and patterns in time series 
+Answer:
+
+ts (AirQualityUCI, frequency = 4, start = c(1959, 2)) # frequency for Quarterly Data 
+ts (1:10, frequency = 12, start = 1990) # freq for Monthly data. 
+ts (AirQualityUCI, start=c(2009), end=c(2014), frequency=1) # Yearly Data 
+ts (1:1000, frequency = 365, start = 1990)# freq daily data. 
+tsAirqualityUCI <- EuStockMarkets[, 1]
+
+
+
+i. Find out the most polluted time of the day and the name of the chemical compound. 
+
+Answer:
+
+
+tsAirqualityUCI <- EuStockMarkets[, 1] # ts data decomposedRes <- decompose(tsAirqualityUCI, type="mult") # use type = "additive" for additive components plot (decomposedRes) 
+
+stlRes <- stl(tsAirqualityUCI, s.window = "periodic") plot(AirQualityUCI$T, type = "l") 118 119 120 121 122 123 124 125 126 127 128 129 130 [131
+
+PT08.S4(NO2) is the highest pollution at 18.00 hrs PTO*s4
+
+132 133 134 135 136 137 138 139 140 141 142 143 [144] 144 145 146 147 148 149 150 151 152 153 154 155 156 [157] 157 158 159 160 161 162 163 164 165 166 167 168 169 [1 Date	Time
+
+NOx(GT)
+
+PT08.S3(NOx)
+
+NO2(GT)
+
+PT08.S4(NO2)
+
+PT08.S5(O3) 6/8/2004	8:00:00	376	525	125	2746	1708 6/9/2004	8:00:00	357	507	151	2691	2147 10/26/2004	18:00:00	952	325 180	2775	2372 max	1479.0	2682.8	339.7	2775.0	2522.8 70] 170 171 172 173 174 175 176 177 178 179 180 181 182 [183] 183 184 185 186 187 188 189 190 191 192 193 194 195 [196] 196 197 198 199 200 201 202 203 204 205 206 207 208 [209] 209 210 211 212 213 214 215 216 217 218 219 220 221 [222] 222 223 224 225 226 227 228 229 230 231 232 233 234 [235] 235 236 237 238 239 240 241 242 243 244 245 246 247 [248] 248 249 250 251 252 253 254 255 256 257 258 259 260 [261] 261 262 263 264 265 266 267 268 269 270 271 272 273 [274] 274 275 276 277 278 279 280 281 282 283 284 285 286 [287] 287 288 289 290 291 292 293 294 295 296 297 298 299 [300] 300 301 302 303 304 305 306 307 308 309 310 311 312 [313] 313 314 315 316 317 318 319 320 321 322 323 324 325 [326] 326 327 328 329 330 331 332 333 334 335 336 337 338 NAs introduced by coercionNAs introduced by coercionNAs introduced by coercionNAs introduced by coercionNAs introduced by coercion Date Time CO(GT) PT08.S1(CO) NMHC(GT) C6H6(GT) PT08.S2(NMHC) 1959 Q2 NA NA NA 1360 150 NA 1046 1959 Q3 NA NA 2 1292 112 NA 955 1959 Q4 NA NA NA 1402 88 NA 939 1960 Q1 NA NA NA 1376 80 NA 948 1960 Q2 NA NA NA 1272 51 NA 836 1960 Q3 NA NA NA 1197 38 NA 750 1960 Q4 NA NA NA 1185 31 NA 690 1961 Q1 NA NA 1 1136 31 NA 672 1961 Q2 NA NA NA 1094 24 NA 609 1961 Q3 NA NA NA 1010 19 NA 561 1961 Q4 NA NA NA 1011 14 NA 527 1962 Q1 NA NA NA 1066 8 NA 512 1962 Q2 NA NA NA 1052 16 NA 553 1962 Q3 NA NA NA 1144 29 NA 667 1962 Q4 NA NA 2 1333 64 NA 900 1963 Q1 NA NA NA 1351 87 NA 960 1963 Q2 NA NA NA 1233 77 NA 827 1963 Q3 NA NA NA 1179 43 NA 762 1963 Q4 NA NA NA 1236 61 NA 774 1964 Q1 NA NA NA 1286 63 NA 869 1964 Q2 NA NA NA 1371 164 NA 1034 1964 Q3 NA NA NA 1310 79 NA 933 1964 Q4 NA NA NA 1292 95 NA 912 1965 Q1 NA NA NA 1383 150 NA 1020 1965 Q2 NA NA NA 1581 307 NA 1319 1965 Q3 NA NA NA 1776 461 NA 1488 1965 Q4 NA NA NA 1640 401 NA 1404 1966 Q1 NA NA NA 1313 197 NA 1076 1966 Q2 NA NA NA 965 61 NA 749 1966 Q3 NA NA 1 913 26 NA 629 1966 Q4 NA NA NA 1080 55 NA 805 1967 Q1 NA
+
+Date	Time	CO(GT)	PT08.S1(CO)	NMHC(GT)	C6H6(GT)	PT08.S2(NMHC) 6/8/2004	8:00:00	5.8	1377	-200	36.1	1688 6/9/2004 8:00:00	6.4	1496	-200	36.9	1705 10/26/2004	18:00:00	9.5	1908	-200	52.1	2007 max	11.9	2039.8	1189.0	63.7	2214.0 Date	Time
+
+NOx(GT)
+
+PT08.S3(NOx)
+
+NO2(GT)
+
+PT08.S4(NO2)
+
+PT08.S5(O3) 6/8/2004	8:00:00	376	525	125	2746	1708 6/9/2004	8:00:00	357	507	151	2691	2147 10/26/2004	18:00:00	952	325 180	2775	2372 max	1479.0	2682.8	339.7	2775.0	2522.8
+
+[989] 989 990 991 992 993 994 995 996 997 998 999 1000
+
+
